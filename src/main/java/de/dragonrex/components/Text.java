@@ -5,21 +5,18 @@ import de.dragonrex.style.StyleParser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
-public class Button extends FlutterWidget {
-    private String label;
-    private ActionListener onPressed;
-    private Font font = new Font("Arial", Font.PLAIN, 16);
-    private Color textColor = Color.BLACK;
+public class Text extends FlutterWidget {
+    private String content;
     private int width = 100;
     private int height = 50;
-    private Color color = Color.WHITE;
+    private Font font = new Font("Arial", Font.PLAIN, 16);
+    private Color color = new Color(0, 0, 0, 0);
+    private Color textColor = Color.BLACK;
     private int cornerRadius = 10;
 
-    public Button(String label, String style, ActionListener onPressed) {
-        this.label = label;
-        this.onPressed = onPressed;
+    public Text(String content, String style) {
+        this.content = content;
 
         StyleParser.parse(style).forEach((key, value) -> {
             switch (key) {
@@ -38,18 +35,15 @@ public class Button extends FlutterWidget {
 
     @Override
     public JComponent build() {
-        JButton btn = new JButton(label);
-        btn.setPreferredSize(new Dimension(width, height));
-        btn.setBorderPainted(false);
-        btn.setFont(font);
-        btn.setForeground(textColor);
-        btn.setBackground(color);
+        JLabel jLabel = new JLabel(content);
+        jLabel.setPreferredSize(new Dimension(width, height));
+        jLabel.setFont(font);
+        jLabel.setBackground(color);
+        jLabel.setForeground(textColor);
         if (cornerRadius > 0) {
-            btn.putClientProperty("JButton.buttonType", "roundRect");
-            btn.putClientProperty("Component.arc", cornerRadius);
+            jLabel.putClientProperty("JButton.buttonType", "roundRect");
+            jLabel.putClientProperty("Component.arc", cornerRadius);
         }
-        if (onPressed != null)
-            btn.addActionListener(onPressed);
-        return btn;
+        return jLabel;
     }
 }
